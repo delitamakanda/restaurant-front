@@ -1,16 +1,14 @@
-import type { MetaFunction } from "@remix-run/node";
+import styled from "@emotion/styled";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
+const BigTitle = styled.h1`
+  font-size: 5rem;
+  color: #000;
+`;
 
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
+      <BigTitle>Welcome to Remix</BigTitle>
       <ul>
         <li>
           <a
@@ -20,6 +18,7 @@ export default function Index() {
           >
             15m Quickstart Blog Tutorial
           </a>
+            <span className="ri-admin-line"></span>
         </li>
         <li>
           <a
