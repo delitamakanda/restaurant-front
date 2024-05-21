@@ -25,6 +25,7 @@ export default function Index() {
         <button type="submit" name="lng" value="fr">Français</button>
         <button type="submit" name="lng" value="en">English</button>
       </Form>
+      
     </div>
   );
 }
