@@ -12,7 +12,30 @@ import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { getInitialNamespaces } from "remix-i18next/client";
 import * as i18n from './config/i18n';
+import { CacheProvider } from "@emotion/react";
+import * as React from "react";
 
+import ClientStyleContext from "./styles/client.context";
+import createEmotionCache from "./styles/createEmotionCache";
+
+interface ClientCacheProviderProps {
+  children: React.ReactNode;
+}
+
+function ClientCacheProvider({ children }: ClientCacheProviderProps) {
+  const [cache, setCache] = React.useState(createEmotionCache());
+
+  const reset = React.useCallback(() => {
+    setCache(createEmotionCache());
+  }, []);
+
+  return (
+    <ClientStyleContext.Provider value={{ reset }}>
+      <CacheProvider value={cache}>{children}</CacheProvider>
+    </ClientStyleContext.Provider>
+  )
+
+}
 
 i18next.use(initReactI18next)
 .use(I18nextBrowserLanguageDetector)
@@ -26,9 +49,10 @@ startTransition(() => {
   hydrateRoot(
     document,
     <I18nextProvider i18n={i18next}>
-      <StrictMode>
+      <ClientCacheProvider>
+        <StrictMode />
       <RemixBrowser />
-    </StrictMode>
+      </ClientCacheProvider>
     </I18nextProvider>
   )
 })
