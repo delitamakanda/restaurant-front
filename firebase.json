@@ -1,0 +1,21 @@
+{
+    "hosting": [
+        {
+          "site": "click-and-serve",
+          "public": "public",
+          "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+          ],
+          "rewrites": [
+            {
+              "source": "**",
+              "run": {
+                "serviceId": "groceryapp"
+              }
+            }
+          ]
+        }
+      ]
+}
