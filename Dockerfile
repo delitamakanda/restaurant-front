@@ -6,7 +6,7 @@ FROM base as build
 RUN mkdir /app/
 WORKDIR /app/
 COPY . /app
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN npm run build
 
 # # Get the production modules
