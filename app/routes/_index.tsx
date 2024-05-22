@@ -10,8 +10,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 const BigTitle = styled.h1`
-  font-size: 5rem;
-  color: #ff3333;
+  font-size: 2rem;
+  color: #000;
 `;
 
 const Container = styled("div")`
