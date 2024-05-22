@@ -14,11 +14,22 @@ const BigTitle = styled.h1`
   color: #ff3333;
 `;
 
+const Container = styled("div")`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+  font-family: system-ui, sans-serif;
+  line-height: 1.8;
+`;
+
 export default function Index() {
   const { description } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+    <Container>
       <BigTitle>{t("title")}</BigTitle>
       <p>{description}</p>
       <Form>
@@ -26,6 +37,6 @@ export default function Index() {
         <button type="submit" name="lng" value="en">English</button>
       </Form>
       
-    </div>
+    </Container>
   );
 }
