@@ -41,8 +41,8 @@ WORKDIR /app
 
 COPY --from=production-deps /app/node_modules /app/node_modules
 #My build goes to /app/server/build and i'm running /server/index.js express
-COPY --from=build /app/build/server /app/server
-COPY --from=build /app/build/client /app/client
+COPY --from=build /app/server /app/build/server
+COPY --from=build /app/client /app/build/client
 ADD . .
 
 CMD ["npm", "run", "start"]
