@@ -8,7 +8,7 @@ RUN mkdir /app
 WORKDIR /app
 
 ADD package.json package-lock.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --production=false
 
 # Setup production node_modules
 FROM base as production-deps
@@ -41,8 +41,8 @@ WORKDIR /app
 
 COPY --from=production-deps /app/node_modules /app/node_modules
 #My build goes to /app/server/build and i'm running /server/index.js express
-COPY --from=build /app/server /app/server
-COPY --from=build /app/client /app/client
+COPY --from=build ./app/server /app/server
+COPY --from=build ./app/client /app/client
 ADD . .
 
 CMD ["npm", "run", "start"]
