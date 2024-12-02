@@ -19,9 +19,20 @@ import { useContext, useEffect, useRef } from "react";
 import ClientStyleContext from "./styles/client.context";
 import ServerStyleSContext from "./styles/server.context";
 
-const Container = styled("div")`
-  background-color: #ff11cc;
-  padding: 1em;
+const Body = styled("body")`
+    margin: 0;
+    padding: 0;
+  font-family: system-ui, sans-serif;
+    line-height: 1.8;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow-x: hidden;
+    color: #333;
+    text-align: center;
 `;
 
 export const handle = { i18n: ["translation"]};
@@ -40,7 +51,9 @@ interface DocumentProps {
 export const meta: MetaFunction = () => {
   return [
     { charset: "utf-8" },
-    { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { httpEquiv:"X-UA-Compatible", content: "IE=edge" },
+    { name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" },
+    { name: "mobile-web-app-capable", content: "yes" },
     { property: "og:title", content: "Click&Serve" },
     { property: "og:description", content: "Welcome to Remix!" },
     { title: "Click&Serve" },
@@ -81,14 +94,11 @@ const Document = withEmotionCache(
             <style key={key} data-emotion={`${key} ${ids.join(" ")}`} dangerouslySetInnerHTML={{ __html: css}}></style>
           ))}
         </head>
-        <body>
-          <Container>
-            Click&Serve
-          </Container>
+        <Body>
           {children}
           <ScrollRestoration />
           <Scripts />
-        </body>
+        </Body>
       </html>
     )
 });
