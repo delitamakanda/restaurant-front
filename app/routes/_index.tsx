@@ -47,8 +47,8 @@ const Categories = styled.div`
     align-items: center;
     flex-direction: row;
     flex-basis: 100%;
-    max-width: 800px;
     width: 100%;
+    max-width: 500px;
     overflow-x: auto;
     overflow-y: hidden;
 `;
@@ -69,6 +69,7 @@ interface Restaurants {
     name: string;
     schedule: Array<{day: string;}>;
     user: number;
+    tags: string;
 }
 
 export default function Index() {
@@ -105,6 +106,7 @@ export default function Index() {
                 <div key={restaurant.id}>
                     <img src={restaurant.image_url} alt={restaurant.name}/>
                     <div>{restaurant.name}</div>
+                    <div>{restaurant.tags}</div>
                 </div>
             ))}
         </div>
