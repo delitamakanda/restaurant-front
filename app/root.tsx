@@ -24,15 +24,9 @@ const Body = styled("body")`
     padding: 0;
   font-family: system-ui, sans-serif;
     line-height: 1.8;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    overflow-x: hidden;
-    color: #333;
-    text-align: center;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
 `;
 
 export const handle = { i18n: ["translation"]};

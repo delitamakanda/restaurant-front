@@ -35,22 +35,64 @@ const Container = styled("div")`
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     justify-content: center;
-    padding: 1em;
     font-family: system-ui, sans-serif;
     line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
+    padding: 0;
 `;
 
 const Categories = styled.div`
     display: flex;
-    justify-content: space-around;
+    margin: 0 16px;
     align-items: center;
-    flex-direction: row;
-    flex-basis: 100%;
     width: 100%;
-    max-width: 500px;
     overflow-x: auto;
     overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: none;
+    height: 74px;
+`;
+
+const CategoryItem = styled.div`
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    flex-direction: column;
+    `;
+
+const CategoryImg = styled.div`
+    width: 54px;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const CategoryTitle = styled.div`
+font-size: 14px;
+    font-weight: 700;
+    color: #333;
+    text-decoration: navajowhite;
+`;
+
+const Grid = styled.div`
+    display: grid;
+    margin-bottom: 16px;
+    padding: 16px;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+`;
+
+const Card = styled.div`
+    min-width: 164px;
+    width: 100%;
+    max-width: 246px;
 `;
 
 interface Categories {
@@ -85,32 +127,50 @@ export default function Index() {
     };
     return (
         <Container>
-            <BigTitle>{t("title")}</BigTitle>
-            <p>{description}</p>
-            <Categories>
-                {
-                    categories.map((category: Categories) => (
-                        <div key={category.id} onClick={handleCategory(category.id)}>
-                            <img src={category.image_url} alt={category.name}/>
-                            <p>{category.name}</p>
-                        </div>
-                    ))
-                }
-            </Categories>
+            <div style={{ display: 'flex', flex: '1 1 0%', flexDirection: 'column'}}>
+                <div style={{ flex: '1 1 0%' }}>
             <Form>
                 <button type="submit" name="lng" value="fr">Français</button>
                 <button type="submit" name="lng" value="en">English</button>
             </Form>
-            <div>
+            <BigTitle>{t("title")}</BigTitle>
+            <small>{description}</small>
+            <Categories>
+                {
+                    categories.map((category: Categories) => (
+                        <CategoryItem key={category.id} onClick={handleCategory(category.id)}>
+                            <CategoryImg><img src={category.image_url} alt={category.name} style={{ width: 'auto', height: 'auto', maxHeight: '50px', maxWidth: '50px', display: 'block', transition: 'transform 0.5s'}}/></CategoryImg>
+                            <CategoryTitle><span>{category.name}</span></CategoryTitle>
+                        </CategoryItem>
+                    ))
+                }
+            </Categories>
+
+            <Grid>
                 {restaurants.map((restaurant: Restaurants) => (
-                <div key={restaurant.id}>
-                    <img src={restaurant.image_url} alt={restaurant.name}/>
-                    <div>{restaurant.name}</div>
-                    <div>{restaurant.tags}</div>
-                </div>
+                <Card key={restaurant.id}>
+                    <div className="restaurant-image" style={{ backgroundImage: `url(${restaurant.image_url})`, backgroundSize: 'cover', overflow: 'hidden',backgroundPosition: 'center center', borderRadius: '8px', height: '135px', display: 'flex', position: 'relative', border: '1px solid rgb(228, 288, 231)'}}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: '12px', color: "blue", backgroundColor: 'lightblue', width: 'fit-content', borderRadius: '6px', position: 'absolute', left: '8px', bottom: '8px', padding: '4px 8px'}}>
+                            {restaurant.tags}
+                        </div>
+                    </div>
+                    <span style={{ fontSize: '16px',
+                        fontStyle: 'normal',
+                        fontWeight: 700,
+                        lineHeight: '24px',
+                        textDecoration: 'none',
+                        color: 'rgb(26, 26, 26)',
+                        opacity: 1,
+                        marginTop: '8px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        }}>{restaurant.name}</span>
+                </Card>
             ))}
-        </div>
-      
+        </Grid>
+                </div>
+            </div>
     </Container>
   );
 }
