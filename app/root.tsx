@@ -20,13 +20,15 @@ import ClientStyleContext from "./styles/client.context";
 import ServerStyleSContext from "./styles/server.context";
 
 const Body = styled("body")`
-    margin: 0;
     padding: 0;
   font-family: system-ui, sans-serif;
     line-height: 1.8;
     height: 100%;
     width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
     box-sizing: border-box;
+    text-align: center;
 `;
 
 export const handle = { i18n: ["translation"]};

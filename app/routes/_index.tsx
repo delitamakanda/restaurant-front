@@ -7,6 +7,7 @@ import {Restaurants} from "~/interfaces/restaurant"
 import styles from '../assets/css/root.module.css'
 import Category from "~/components/core/category/Category";
 import {useEffect, useState} from "react";
+import Card from "~/components/core/card/Card";
 
 export async function loader({request}: LoaderFunctionArgs) {
     const t = await i18nServer.getFixedT(request);
@@ -34,34 +35,12 @@ const BigTitle = styled.h1`
     color: #000;
 `;
 
-const Container = styled("div")`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    font-family: system-ui, sans-serif;
-    line-height: 1.8;
-    max-width: 700px;
-    margin: 0 auto;
-    position: relative;
-    min-height: 100vh;
-    padding: 0;
-`;
-
 const Grid = styled.div`
     display: grid;
     margin-bottom: 16px;
     padding: 16px;
     gap: 16px;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-`;
-
-const Card = styled.div`
-    min-width: 164px;
-    width: 100%;
-    max-width: 246px;
 `;
 
 
@@ -93,7 +72,7 @@ export default function Index() {
         setFilteredRestaurants(filteredRestaurants)
     }, [filteredRestaurants]);
     return (
-        <Container>
+        <>
             <div className={styles.column}>
 
             <Form>
@@ -107,18 +86,11 @@ export default function Index() {
 
             <Grid>
                 {filteredRestaurants.map((restaurant: Restaurants) => (
-                <Card key={restaurant.id}>
-                    <div className={styles.image} style={{ backgroundImage: `url(${restaurant.image_url})`}}>
-                        <div className={styles.tags}>
-                            {restaurant.tags}
-                        </div>
-                    </div>
-                    <span className={styles.title}>{restaurant.name}</span>
-                </Card>
+                <Card key={restaurant.id} restaurant={restaurant} />
             ))}
-        </Grid>
+            </Grid>
 
             </div>
-    </Container>
+    </>
   );
 }

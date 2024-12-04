@@ -38,3 +38,9 @@
     text-overflow: ellipsis;
     display: -webkit-box;
 }
+
+.card {
+    min-width: 164px;
+    width: 100%;
+    max-width: 246px;
+}
