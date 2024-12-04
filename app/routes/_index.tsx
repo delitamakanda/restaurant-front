@@ -3,6 +3,10 @@ import {json, type LoaderFunctionArgs} from "@remix-run/node";
 import {Form, useLoaderData} from "@remix-run/react";
 import {useTranslation} from "react-i18next";
 import i18nServer from "~/modules/i18n.server";
+import {Restaurants} from "~/interfaces/restaurant"
+import styles from '../assets/css/root.module.css'
+import Category from "~/components/core/category/Category";
+import {useEffect, useState} from "react";
 
 export async function loader({request}: LoaderFunctionArgs) {
     const t = await i18nServer.getFixedT(request);
@@ -46,41 +50,6 @@ const Container = styled("div")`
     padding: 0;
 `;
 
-const Categories = styled.div`
-    display: flex;
-    margin: 0 16px;
-    align-items: center;
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    scrollbar-width: none;
-    height: 74px;
-`;
-
-const CategoryItem = styled.div`
-    padding: 0 8px;
-    display: flex;
-    align-items: center;
-    margin-right: 8px;
-    flex-direction: column;
-    `;
-
-const CategoryImg = styled.div`
-    width: 54px;
-    height: 54px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const CategoryTitle = styled.div`
-font-size: 14px;
-    font-weight: 700;
-    color: #333;
-    text-decoration: navajowhite;
-`;
-
 const Grid = styled.div`
     display: grid;
     margin-bottom: 16px;
@@ -95,24 +64,6 @@ const Card = styled.div`
     max-width: 246px;
 `;
 
-interface Categories {
-    id: string;
-    name: string;
-    image_url: string;
-    position: string;
-}
-
-interface Restaurants {
-    address: Array<string>;
-    categories: Array<{id: string; name: string}>;
-    id: string;
-    image_url: string;
-    menus: Array<{id: string;}>;
-    name: string;
-    schedule: Array<{day: string;}>;
-    user: number;
-    tags: string;
-}
 
 export default function Index() {
     const {
@@ -121,55 +72,52 @@ export default function Index() {
         restaurants: {data: {restaurants}}
     } = useLoaderData<typeof loader>();
     const {t} = useTranslation();
-    const handleCategory = (categoryId: string) => () => {
-        console.log(restaurants.filter((restaurant: Restaurants) => restaurant.categories.some((category) => category.id === categoryId)));
 
+    const [ filteredRestaurants, setFilteredRestaurants] = useState<Restaurants[]>(restaurants);
+    const [count, setCount] = useState(0);
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+    const handleCategory = (categoryId: string) => {
+        const filteredRestaurants = restaurants.filter((restaurant: Restaurants) => restaurant.categories.some((category) => category.id === categoryId));
+
+        setFilteredRestaurants(filteredRestaurants);
+        setActiveCategory(categoryId);
+        setCount(count + 1);
+        if (activeCategory === categoryId) {
+            setCount(0);
+            setActiveCategory(null);
+            setFilteredRestaurants(restaurants);
+        }
     };
+    useEffect(() => {
+        setFilteredRestaurants(filteredRestaurants)
+    }, [filteredRestaurants]);
     return (
         <Container>
-            <div style={{ display: 'flex', flex: '1 1 0%', flexDirection: 'column'}}>
-                <div style={{ flex: '1 1 0%' }}>
+            <div className={styles.column}>
+
             <Form>
                 <button type="submit" name="lng" value="fr">Français</button>
                 <button type="submit" name="lng" value="en">English</button>
             </Form>
             <BigTitle>{t("title")}</BigTitle>
             <small>{description}</small>
-            <Categories>
-                {
-                    categories.map((category: Categories) => (
-                        <CategoryItem key={category.id} onClick={handleCategory(category.id)}>
-                            <CategoryImg><img src={category.image_url} alt={category.name} style={{ width: 'auto', height: 'auto', maxHeight: '50px', maxWidth: '50px', display: 'block', transition: 'transform 0.5s'}}/></CategoryImg>
-                            <CategoryTitle><span>{category.name}</span></CategoryTitle>
-                        </CategoryItem>
-                    ))
-                }
-            </Categories>
+            <Category categories={categories} onCategoryClick={handleCategory} activatedCategory={count} selectedCategory={activeCategory}
+            />
 
             <Grid>
-                {restaurants.map((restaurant: Restaurants) => (
+                {filteredRestaurants.map((restaurant: Restaurants) => (
                 <Card key={restaurant.id}>
-                    <div className="restaurant-image" style={{ backgroundImage: `url(${restaurant.image_url})`, backgroundSize: 'cover', overflow: 'hidden',backgroundPosition: 'center center', borderRadius: '8px', height: '135px', display: 'flex', position: 'relative', border: '1px solid rgb(228, 288, 231)'}}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: '12px', color: "blue", backgroundColor: 'lightblue', width: 'fit-content', borderRadius: '6px', position: 'absolute', left: '8px', bottom: '8px', padding: '4px 8px'}}>
+                    <div className={styles.image} style={{ backgroundImage: `url(${restaurant.image_url})`}}>
+                        <div className={styles.tags}>
                             {restaurant.tags}
                         </div>
                     </div>
-                    <span style={{ fontSize: '16px',
-                        fontStyle: 'normal',
-                        fontWeight: 700,
-                        lineHeight: '24px',
-                        textDecoration: 'none',
-                        color: 'rgb(26, 26, 26)',
-                        opacity: 1,
-                        marginTop: '8px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        }}>{restaurant.name}</span>
+                    <span className={styles.title}>{restaurant.name}</span>
                 </Card>
             ))}
         </Grid>
-                </div>
+
             </div>
     </Container>
   );

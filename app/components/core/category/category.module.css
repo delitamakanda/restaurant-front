@@ -1,0 +1,47 @@
+.categories {
+    display: flex;
+    margin: 0 16px;
+    align-items: center;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: none;
+    height: 74px;
+}
+
+.image {
+    width: auto;
+    max-height: 50px;
+    max-width: 50px;
+    height: auto;
+    display: block;
+    transition: transform 0.5s;
+}
+
+.title {
+    font-weight: 700;
+    color: #333;
+    text-decoration: navajowhite;
+}
+
+.image {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item {
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    flex-direction: column;
+}
+
+.active {
+    background-color: #f1f1f1;
+    border-radius: 50% 50%;
+}
