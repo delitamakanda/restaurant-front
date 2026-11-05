@@ -12,14 +12,14 @@ import Card from "~/components/core/card/Card";
 export async function loader({request}: LoaderFunctionArgs) {
     const t = await i18nServer.getFixedT(request);
     const [data1, data2] = await Promise.all([
-        await fetch("https://restaurantapi.applikuapp.com/api/restaurants/", {
+        await fetch("https://restaurant.delita-makanda.workers.dev/api/restaurants/", {
             headers: {
                 "Content-Type": "application/json",
             },
             method: "GET",
             mode: "no-cors"
         }),
-        await fetch("https://restaurantapi.applikuapp.com/api/categories/", {
+        await fetch("https://restaurant.delita-makanda.workers.dev/api/categories/", {
             headers: {
                 "Content-Type": "application/json",
             },
